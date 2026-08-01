@@ -3,9 +3,9 @@ package issue
 type Severity string
 
 const (
-	Low    Severity = "LOW"
-	Medium Severity = "MEDIUM"
-	High   Severity = "HIGH"
+	LOW    Severity = "LOW"
+	MEDIUM Severity = "MEDIUM"
+	HIGH   Severity = "HIGH"
 )
 
 type Issue struct {
