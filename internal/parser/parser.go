@@ -7,7 +7,3 @@ import (
 type Parser interface {
 	Parse([]byte) (config.Config, error)
 }
-
-func ParseBytes(p Parser, file []byte) {
-	p.Parse(file)
-}

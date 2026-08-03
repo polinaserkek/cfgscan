@@ -3,10 +3,13 @@ package rules
 import (
 	"cfgscan/internal/config"
 	"cfgscan/internal/issue"
+	"strings"
 )
 
-func CheckDebug(cfg config.Config) []issue.Issue {
-	if cfg.Log.Level == "debug" {
+type DebugRule struct{}
+
+func (d DebugRule) Check(cfg config.Config) []issue.Issue {
+	if strings.EqualFold(cfg.Log.Level, "debug") {
 		return []issue.Issue{
 			{
 				Severity:       issue.LOW,
