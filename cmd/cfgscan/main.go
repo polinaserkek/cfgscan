@@ -16,7 +16,6 @@ func main() {
 	stdin := flag.Bool("stdin", false, "read config from stdin")
 
 	flag.Parse()
-
 	args := flag.Args()
 
 	if !*stdin && len(args) == 0 {

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "log": {
+    "level": "debug"
+  },
+  "storage": {
+    "digest-algorithm": "md5"
+  },
+  "auth": {
+    "password": "admin123"
+  },
+  "tls": {
+    "enabled": true
+  },
+  "network": {
+    "host": "0.0.0.0"
+  }
+}
