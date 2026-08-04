@@ -1,20 +1,22 @@
 package parser
 
 import (
-	"fmt"
-	"path/filepath"
+	"cfgscan/internal/config"
+	"errors"
 )
 
-func SelectParser(path string) (Parser, error) {
-	ext := filepath.Ext(path)
+func DetectParser(data []byte) (config.Config, error) {
+	jp := JSONParser{}
+	yp := YAMLParser{}
 
-	switch ext {
-	case ".json":
-		return JSONParser{}, nil
-	case ".yaml", ".yml":
-		return YAMLParser{}, nil
-	default:
-		return nil, fmt.Errorf("такой формат на поддерживается: %s", ext)
+	cfg, err := jp.Parse(data)
+	if err == nil {
+		return cfg, nil
+	}
+	cfg, err = yp.Parse(data)
+	if err == nil {
+		return cfg, nil
 	}
 
+	return config.Config{}, errors.New("поддерживаются только JSON и YAML")
 }

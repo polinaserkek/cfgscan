@@ -1,9 +1,10 @@
 package main
 
 import (
+	"cfgscan/internal/issue"
 	"cfgscan/internal/parser"
 	"cfgscan/internal/scanner"
-	"errors"
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -11,52 +12,56 @@ import (
 )
 
 func main() {
-	path, data, err := readInput()
+	silent := flag.Bool("silent", false, "don't exit with error")
+	stdin := flag.Bool("stdin", false, "read config from stdin")
+
+	flag.Parse()
+
+	args := flag.Args()
+
+	if !*stdin && len(args) == 0 {
+		log.Fatal("не указан конфигурационный файл")
+	}
+
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	}
+
+	data, err := readInput(path, *stdin)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println(string(data))
-
-	p, err := parser.SelectParser(path)
+	cfg, err := parser.DetectParser(data)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(p)
-
-	cfg, err := p.Parse(data)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("%+v\n", cfg)
-	fmt.Printf("%v\n", cfg)
 
 	sc := scanner.New()
 
 	issues := sc.Scan(cfg)
-
-	fmt.Printf("%v\n", issues)
+	printIssues(issues, *silent)
 }
 
-func readInput() (string, []byte, error) {
-	if len(os.Args) < 2 {
-		return "", nil, errors.New("no file")
-	}
-
-	if os.Args[1] == "--stdin" {
-		data, err := io.ReadAll(os.Stdin)
-		if err != nil {
-			return "", nil, err
+func printIssues(issues []issue.Issue, silent bool) {
+	if len(issues) > 0 {
+		for _, issue := range issues {
+			fmt.Printf("%s: %s %s\n",
+				issue.Severity,
+				issue.Message,
+				issue.Recommendation,
+			)
 		}
-		return "", data, nil
-
+		if !silent {
+			os.Exit(1)
+		}
 	}
-	data, err := os.ReadFile(os.Args[1])
-	if err != nil {
-		return "", nil, err
-	}
-	return os.Args[1], data, nil
+}
 
+func readInput(path string, stdin bool) ([]byte, error) {
+	if stdin {
+		return io.ReadAll(os.Stdin)
+	}
+	return os.ReadFile(path)
 }
