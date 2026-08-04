@@ -8,7 +8,7 @@ import (
 type TLSRule struct{}
 
 func (t TLSRule) Check(cfg config.Config) []issue.Issue {
-	if !cfg.TLS.Enabled {
+	if cfg.TLS.Enabled != nil && !*cfg.TLS.Enabled {
 		return []issue.Issue{
 			{
 				Severity:       issue.HIGH,

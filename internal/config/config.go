@@ -13,7 +13,7 @@ type AuthConfig struct {
 }
 
 type TLSConfig struct {
-	Enabled bool `yaml:"enabled" json:"enabled"`
+	Enabled *bool `yaml:"enabled" json:"enabled"`
 }
 
 type NetworkConfig struct {
