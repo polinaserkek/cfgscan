@@ -17,7 +17,7 @@ type TLSConfig struct {
 }
 
 type NetworkConfig struct {
-	Address string `yaml:"host" json:"host"`
+	Address string `yaml:"address" json:"address"`
 }
 
 type Config struct {

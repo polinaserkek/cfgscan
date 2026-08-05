@@ -11,6 +11,7 @@ type UnsafeHashAlgorithmRule struct{}
 func (uha UnsafeHashAlgorithmRule) Check(cfg config.Config) []issue.Issue {
 	unsafeHashAlgos := map[string]bool{
 		"md5":   true,
+		"md-5":  true,
 		"sha1":  true,
 		"sha-1": true,
 	}
