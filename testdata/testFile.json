@@ -4,7 +4,7 @@
     "level": "debug"
   },
   "storage": {
-    "digest-algorithm": "md5"
+    "digest-algorithm": "sha1"
   },
   "auth": {
     "password": "admin123"

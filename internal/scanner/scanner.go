@@ -26,7 +26,7 @@ func New() Scanner {
 	return Scanner{
 		checks: []rules.Rule{
 			rules.DebugRule{},
-			rules.MD5Rule{},
+			rules.UnsafeHashAlgorithmRule{},
 			rules.PasswordRule{},
 			rules.TLSRule{},
 			rules.OpenBindAddressRule{},
