@@ -6,9 +6,9 @@ import (
 
 func TestYAMLParser_CorrectData(t *testing.T) {
 	data := []byte(`
-		log: 
-			level: debug
-	`)
+log:
+  level: debug
+`)
 
 	parser := YAMLParser{}
 
@@ -25,7 +25,10 @@ func TestYAMLParser_CorrectData(t *testing.T) {
 }
 
 func TestYAMLParser_IncorrectData(t *testing.T) {
-	data := []byte(`log: `)
+	data := []byte(`
+log:
+  level: [debug
+`)
 
 	parser := YAMLParser{}
 
