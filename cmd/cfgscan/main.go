@@ -3,6 +3,7 @@ package main
 import (
 	"cfgscan/internal/issue"
 	"cfgscan/internal/parser"
+	"cfgscan/internal/permissions"
 	"cfgscan/internal/scanner"
 	"flag"
 	"fmt"
@@ -40,7 +41,18 @@ func main() {
 	sc := scanner.New()
 
 	issues := sc.Scan(cfg)
+
+	if !*stdin {
+		permIssues, err := permissions.CheckFilePermissions(path)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+		issues = append(issues, permIssues...)
+	}
+
 	printIssues(issues, *silent)
+
 }
 
 func printIssues(issues []issue.Issue, silent bool) {
